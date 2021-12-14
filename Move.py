@@ -4,14 +4,12 @@ class Move(object):
         moveInfo = []
         # Only reading through the file if no information is stored in the Moves Dictionary
         if len(Move.MOVES_DICTIONARY) == 0:
-            fin = open("Pokemon Moves.csv", 'r')
-            for line in fin:
-                line = line.strip()
-                moveList = line.split(",")
-                Move.MOVES_DICTIONARY[moveList[1]] = moveList  # The name of the move is the key while the rest of the
-                # list is the value
-
-            fin.close()
+            with open("Pokemon Moves.csv", 'r') as fin:
+                for line in fin:
+                    line = line.strip()
+                    moveList = line.split(",")
+                    Move.MOVES_DICTIONARY[moveList[1]] = moveList  # The name of the move is the key while the rest of the
+                    # list is the value
 
         # Finding the matching key in the dictionary, then assigning the list to a variable called moveInfo
         for key in Move.MOVES_DICTIONARY:
@@ -38,8 +36,7 @@ class Move(object):
     # METHODS
     # str method
     def __str__(self):
-        msg = self.name + " " + str(self.power)
-        return msg
+        return self.name + " " + str(self.power)
 
 
     # GET Methods

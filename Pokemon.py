@@ -11,13 +11,11 @@ class Pokemon(object):
     def __init__(self, pokemon):  # takes a user-selected Pokemon as an argument
         pokemonInfo = []
         if len(Pokemon.POKEMON_DICTIONARY) == 0:
-            fin = open("Kanto Pokemon Spreadsheet.csv", 'r')
-            for line in fin:
-                line = line.strip()
-                pokeList = line.split(",")
-                Pokemon.POKEMON_DICTIONARY[pokeList[1]] = pokeList  # Creating key (Pokemon name) value (id info) pair
-
-            fin.close()
+            with open("Kanto Pokemon Spreadsheet.csv", 'r') as fin:
+                for line in fin:
+                    line = line.strip()
+                    pokeList = line.split(",")
+                    Pokemon.POKEMON_DICTIONARY[pokeList[1]] = pokeList  # Creating key (Pokemon name) value (id info) pair
 
         # Creating an info list for the user-selected Pokemon containing all the Pokemon attributes
         for key in Pokemon.POKEMON_DICTIONARY:
@@ -81,10 +79,28 @@ class Pokemon(object):
     # METHODS
     # Printing all the Pokemon info with the str method
     def __str__(self):
-        msg = "Name: " + str(self.__name) + "\nID: " + str(self.__id) + "\nType1: " + str(self.__type1) + \
-              "\nType2: " + str(self.__type2) + "\nBase HP: " + str(self.__hp) + "\nBase ATK: " + str(self.__atk) + "\nBase DEF: " + \
-              str(self.__defense) + "\nBase Sp. ATK: " + str(self.__spAtk) + "\nBase Sp. DEF: " + str(self.__spDef) + "\nBase Speed: " + str(self.__speed)
-        return msg
+        return (
+            "Name: "
+            + str(self.__name)
+            + "\nID: "
+            + str(self.__id)
+            + "\nType1: "
+            + str(self.__type1)
+            + "\nType2: "
+            + str(self.__type2)
+            + "\nBase HP: "
+            + str(self.__hp)
+            + "\nBase ATK: "
+            + str(self.__atk)
+            + "\nBase DEF: "
+            + str(self.__defense)
+            + "\nBase Sp. ATK: "
+            + str(self.__spAtk)
+            + "\nBase Sp. DEF: "
+            + str(self.__spDef)
+            + "\nBase Speed: "
+            + str(self.__speed)
+        )
 
     # Get Attribute METHODS
     def getName(self):
@@ -172,28 +188,32 @@ class Pokemon(object):
     # Print Methods
     # These methods return strings containing information about HP and movesets
     def printHP(self):
-        msg = str(self.name) + ": HP " + str(self.battleHP)
-        return msg
+        return str(self.name) + ": HP " + str(self.battleHP)
 
     def printMoves(self): # Take a list of move names as argument?
-        msg = "\nMove 1: " + self.move1.moveInfo[1] + "\nMove 2: " + self.move2.moveInfo[1] + "\nMove 3: " + self.move3.moveInfo[1] + "\nMove 4: " + self.move4.moveInfo[1]
-        return msg
+        return (
+            "\nMove 1: "
+            + self.move1.moveInfo[1]
+            + "\nMove 2: "
+            + self.move2.moveInfo[1]
+            + "\nMove 3: "
+            + self.move3.moveInfo[1]
+            + "\nMove 4: "
+            + self.move4.moveInfo[1]
+        )
 
     # In Battle Methods
 
     # Takes a move as input and returns a string with the pokemon using that move
     def useMove(self, move):
-        msg = self.name + " used " + move.name + "!"
-        return msg
+        return self.name + " used " + move.name + "!"
 
     # Takes an int as input and returns a string with the pokemon losing that much HP
     def loseHP(self, lostHP):
         self.battleHP -= lostHP
         # Making sure battlHP doesn't fall below 0
-        if self.battleHP <= 0:
-            self.battleHP = 0
-        msg = self.name + " lost " + str(lostHP) + " HP!"
-        return msg
+        self.battleHP = max(self.battleHP, 0)
+        return self.name + " lost " + str(lostHP) + " HP!"
 
     # Takes an int as input and returns a string with the pokemon gaining that much HP
     def gainHP(self, gainedHP):
@@ -201,16 +221,12 @@ class Pokemon(object):
 
     # Determines if the Pokemon still has HP and returns a boolean
     def isAlive(self):
-        if self.battleHP > 0:
-            return True
-        else:
-            return False
+        return self.battleHP > 0
 
     # If battleHP is 0, returns a string showing that the Pokemon fainted
     def faint(self):
         if self.battleHP <= 0:
-            msg = self.name + " fainted "
-            return msg
+            return self.name + " fainted "
 
 
 

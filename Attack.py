@@ -38,18 +38,14 @@ def attack(move, pokemon1, pokemon2):
     # Creating an empty string to store the results of the attack function
     tempMsg= ""
 
-    # Reading "Type Advantages.csv" file to determine type advantages and the damage modifier
-    # Stores the line number in the csv as the key and a list giving information about type advantage for the value
-    fin = open("Type Advantages.csv", 'r')
-    typeDic = {}
-    for line in fin:
-        line = line.strip()
-        typeList = line.split(",")
-        typeDic[typeList[0]] = typeList
-        # This list contains a number in the first position, the attack type in the second, the defending type in the third,
-        # and the appropriate damage multiplier in the fourth
-    fin.close()
-
+    with open("Type Advantages.csv", 'r') as fin:
+        typeDic = {}
+        for line in fin:
+            line = line.strip()
+            typeList = line.split(",")
+            typeDic[typeList[0]] = typeList
+            # This list contains a number in the first position, the attack type in the second, the defending type in the third,
+            # and the appropriate damage multiplier in the fourth
     # Making the input string into an actual move object
     move = Move(move)
 
@@ -57,9 +53,9 @@ def attack(move, pokemon1, pokemon2):
     modifier = 1
 
     # Calculating Type advantages using "Type Advantages.csv" file
-    for key in typeDic:
+    for key, value in typeDic.items():
         # If the attacking and defending types match up, multiply the modifier by the damage multiplier from the list
-        if typeDic[key][1] == move.type and typeDic[key][2] == pokemon2.type1:
+        if value[1] == move.type and typeDic[key][2] == pokemon2.type1:
             modifier *= float(typeDic[key][3])
 
         # Didn't use elif; Just in case you get a 4x or 0.25x modifier based on double type
@@ -67,10 +63,7 @@ def attack(move, pokemon1, pokemon2):
             modifier *= float(typeDic[key][3])
 
     # Calculating STAB (Same-type Attack Bonus)
-    if move.type == pokemon1.type1:
-        modifier *= Pokemon.STAB
-
-    elif move.type == pokemon1.type2:
+    if move.type in [pokemon1.type1, pokemon1.type2]:
         modifier *= Pokemon.STAB
 
     # Damage formula also has a random element

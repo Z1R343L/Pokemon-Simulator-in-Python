@@ -148,7 +148,7 @@ class Application(Frame):
             if self.userPokemon.battleSpeed >= self.cpuPokemon.battleSpeed:
                 self.moveEnt1.config(state=NORMAL)
                 self.moveBtn1.config(state=NORMAL)
-            elif self.cpuPokemon.battleSpeed > self.userPokemon.battleSpeed:
+            else:
                 self.moveEnt2.config(state=NORMAL)
                 self.moveBtn2.config(state=NORMAL)
         self.battleBtn.config(state=DISABLED)
